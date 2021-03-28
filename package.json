@@ -19,7 +19,19 @@
 				"command": "msc-gen-editor.start",
 				"title": "Msc-Gen"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "MSC-Gen",
+			"properties": {
+				"msc-gen-editor.path": {
+					"type": "string",
+					"scope": "application",
+					"default": null,
+					"description": "Path to msc-gen executable. Path variable will used when blank"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

@@ -12,6 +12,21 @@ enum BrowserMessage {
 	SAVE_FILE
 }
 
+class MscGen {
+	private get path(): string | undefined {
+		const config = vscode.workspace.getConfiguration('msc-gen-editor');
+		return config.get<string>('path')
+	}
+
+	fileToImage(input: string, output: string): boolean {
+		const exe = path.join((this.path ?? ""),  "msc-gen")
+		
+		let res = spawnSync(exe, ['-i', input, '-o', output, '-S', 'signalling'])
+
+		return res == 0 ? true : false
+	}
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -93,7 +108,7 @@ function chartToHTML(context: vscode.ExtensionContext, inputFile: string): strin
 	const outputFile = path.join(context.globalStoragePath, "tmp.png")
 	fs.unlinkSync(outputFile)
 
-	let res = spawnSync("msc-gen",['-i', inputFile, '-o', outputFile, '-S', 'signalling'])
+	new MscGen().fileToImage(inputFile, outputFile);
 	return pngToWebpage(outputFile)
 
 }
